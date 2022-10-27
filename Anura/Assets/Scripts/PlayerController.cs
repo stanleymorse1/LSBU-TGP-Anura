@@ -5,6 +5,7 @@ using UnityEditor;
 using System.IO;
 using System.Linq;
 using System;
+using UnityEngine.Animations;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     GameObject currentPoint;
     GameObject nextPoint;
+    Animator anim;
     bool moving;
     Vector3 velocity = Vector3.zero;
 
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
 #else
         inputFile = Application.persistentDataPath + "/InputCodes.txt";
 #endif
+        anim = GetComponent<Animator>();
         EraseString();
     }
     public static void WriteString(string s)
@@ -55,8 +58,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log(output);
         reader.Close();
         return output;
-    }
-    //THIS SHOULD BE HANDLED IN PYTHON SCRIPT, REMOVE WHEN USING WITH SCANNER
+    }    //THIS SHOULD BE HANDLED IN PYTHON SCRIPT, REMOVE WHEN USING WITH SCANNER
     public void EraseString()
     {
         File.WriteAllText(inputFile, "");
@@ -105,9 +107,10 @@ public class PlayerController : MonoBehaviour
         //    move();
         //    prev = inputFile;
         //}
+        anim.SetBool("Moving", moving);
         if (nextPoint && currentPoint != nextPoint && Vector3.Distance(transform.position, nextPoint.transform.position) > 0.01f)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, nextPoint.transform.position, ref velocity, 0.3f, 4f);
+            transform.position = Vector3.SmoothDamp(transform.position, nextPoint.transform.position, ref velocity, 0.1f, 4f);
             moving = true;
         }
         else
@@ -125,24 +128,28 @@ public class PlayerController : MonoBehaviour
             case 0:
                 if (point.up)
                 {
+                    anim.SetTrigger("Forward");
                     nextPoint = point.up.gameObject;
                 }
                 break;
             case 1:
                 if (point.left)
                 {
+                    anim.SetTrigger("Left");
                     nextPoint = point.left.gameObject;
                 }
                 break;
             case 2:
                 if (point.down)
                 {
+                    anim.SetTrigger("Back");
                     nextPoint = point.down.gameObject;
                 }
                 break;
             case 3:
                 if (point.right)
                 {
+                    anim.SetTrigger("Right");
                     nextPoint = point.right.gameObject;
                 }
                 break;
@@ -150,9 +157,5 @@ public class PlayerController : MonoBehaviour
                 break;
         }
         EraseString();
-    }
-    void move(Transform start, Transform end)
-    {
-        transform.position = Vector3.SmoothDamp(start.position, end.position, ref velocity, 1f*Time.deltaTime, 1f*Time.deltaTime);
     }
 }
