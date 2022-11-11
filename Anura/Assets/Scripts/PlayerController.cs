@@ -6,12 +6,16 @@ using System.IO;
 using System.Linq;
 using System;
 using UnityEngine.Animations;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     int startHP;
     int currentHP;
+    int prevHP;
+    [SerializeField]
+    Slider healthBar;
 
     static string inputFile;
     //string prev = "";
@@ -21,6 +25,8 @@ public class PlayerController : MonoBehaviour
     GameObject nextPoint;
     Animator anim;
     bool moving;
+    [HideInInspector]
+    public bool inFight;
     Vector3 velocity = Vector3.zero;
 
     private void Start()
@@ -32,6 +38,8 @@ public class PlayerController : MonoBehaviour
 #endif
         anim = GetComponent<Animator>();
         EraseString();
+        prevHP = startHP;
+        currentHP = startHP;
     }
     public static void WriteString(string s)
     {
@@ -45,8 +53,8 @@ public class PlayerController : MonoBehaviour
             writer.Write(s);
             writer.Close();
             //Re-import the file to update the reference in the editor
-            AssetDatabase.ImportAsset(inputFile);
-            TextAsset asset = (TextAsset)Resources.Load("InputCodes");
+            //AssetDatabase.ImportAsset(inputFile);
+            //TextAsset asset = (TextAsset)Resources.Load("InputCodes");
         }
 
     }
@@ -58,7 +66,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log(output);
         reader.Close();
         return output;
-    }    //THIS SHOULD BE HANDLED IN PYTHON SCRIPT, REMOVE WHEN USING WITH SCANNER
+    }
+    //THIS SHOULD BE HANDLED IN PYTHON SCRIPT, REMOVE WHEN USING WITH SCANNER
     public void EraseString()
     {
         File.WriteAllText(inputFile, "");
@@ -67,6 +76,10 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            hurt(30);
+        }
         //DEBUG KEYBOARD CONTROLS EXCUSE SHITTINESS
         if (!moving)
         {
@@ -117,6 +130,16 @@ public class PlayerController : MonoBehaviour
         {
             moving = false;
         }
+        // Update healthbar if health changes
+        if(currentHP != prevHP)
+        {
+            Debug.Log("Updating HP");
+            float pFrac = (float)prevHP/startHP;
+            float cFrac = (float)currentHP/startHP;
+            healthBar.value -= Mathf.Lerp(pFrac, cFrac, Time.deltaTime);
+            if(healthBar.value <= cFrac)
+                prevHP = currentHP;
+        }
     }
     void gridWalk()
     {
@@ -157,5 +180,11 @@ public class PlayerController : MonoBehaviour
                 break;
         }
         EraseString();
+    }
+
+    public void hurt(int amount)
+    {
+        currentHP -= amount;
+        Debug.Log(currentHP);
     }
 }

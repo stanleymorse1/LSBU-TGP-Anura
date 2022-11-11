@@ -10,9 +10,11 @@ public class CombatTrigger : MonoBehaviour
     GameObject player;
     GameObject playerCam;
     CinemachineBrain brain;
+    Battle fightManager;
     private void Start()
     {
         brain = Camera.main.GetComponent<CinemachineBrain>();
+        fightManager = GameObject.FindWithTag("GameController").GetComponent<Battle>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -31,6 +33,8 @@ public class CombatTrigger : MonoBehaviour
 
             combatCam.SetActive(true);
             playerCam.SetActive(false);
+
+            fightManager.startFight(GetComponent<Enemy>());
         }
     }
 
@@ -38,11 +42,12 @@ public class CombatTrigger : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F1))
             exitBattle();
-        if (!brain.IsBlending && playerCam.activeSelf)
-        {
-            gameObject.GetComponent<AimConstraint>().constraintActive = false;
-            player.GetComponent<AimConstraint>().constraintActive = false;
-        }
+        if(playerCam)
+            if (!brain.IsBlending && playerCam.activeSelf)
+            {
+                gameObject.GetComponent<AimConstraint>().constraintActive = false;
+                player.GetComponent<AimConstraint>().constraintActive = false;
+            }
         else
         {
             gameObject.GetComponent<AimConstraint>().constraintActive = true;
