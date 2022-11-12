@@ -34,7 +34,8 @@ public class CombatTrigger : MonoBehaviour
             combatCam.SetActive(true);
             playerCam.SetActive(false);
 
-            fightManager.startFight(GetComponent<Enemy>());
+            fightManager.enemy = GetComponent<Enemy>();
+            fightManager.startFight();
         }
     }
 
@@ -54,7 +55,7 @@ public class CombatTrigger : MonoBehaviour
             player.GetComponent<AimConstraint>().constraintActive = true;
         }
     }
-    void exitBattle()
+    public void exitBattle()
     {
         combatCam.SetActive(false);
         playerCam.SetActive(true);

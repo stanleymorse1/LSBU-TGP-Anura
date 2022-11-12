@@ -11,9 +11,10 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    int startHP;
+    int maxHP;
     int currentHP;
     int prevHP;
+    public float damage;
     [SerializeField]
     Slider healthBar;
 
@@ -24,6 +25,8 @@ public class PlayerController : MonoBehaviour
     GameObject currentPoint;
     GameObject nextPoint;
     Animator anim;
+    Battle fightManager;
+
     bool moving;
     [HideInInspector]
     public bool inFight;
@@ -38,8 +41,9 @@ public class PlayerController : MonoBehaviour
 #endif
         anim = GetComponent<Animator>();
         EraseString();
-        prevHP = startHP;
-        currentHP = startHP;
+        prevHP = maxHP;
+        currentHP = maxHP;
+        fightManager = GameObject.FindWithTag("GameController").GetComponent<Battle>();
     }
     public static void WriteString(string s)
     {
@@ -103,6 +107,27 @@ public class PlayerController : MonoBehaviour
                 WriteString("3");
                 gridWalk();
             }
+
+            // Enable combat moves
+            if (inFight)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    fightManager.attack(0);
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    fightManager.attack(1);
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    fightManager.attack(2);
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha4) && currentHP < maxHP)
+                {
+                    currentHP += 20;
+                }
+            }
             Collider[] nearColliders = Physics.OverlapSphere(transform.position, 1);
             if (nearColliders.Length > 0)
                 foreach (Collider collider in nearColliders)
@@ -133,12 +158,20 @@ public class PlayerController : MonoBehaviour
         // Update healthbar if health changes
         if(currentHP != prevHP)
         {
-            Debug.Log("Updating HP");
-            float pFrac = (float)prevHP/startHP;
-            float cFrac = (float)currentHP/startHP;
-            healthBar.value -= Mathf.Lerp(pFrac, cFrac, Time.deltaTime);
-            if(healthBar.value <= cFrac)
+            float cFrac = (float)currentHP/maxHP;
+            float barVal = Mathf.Lerp(healthBar.value, cFrac, 0.1f);
+            healthBar.value = barVal;
+            //Only update previous health when bar settles
+            if (healthBar.value <= cFrac + 0.01f && healthBar.value >= cFrac -0.01f)
                 prevHP = currentHP;
+            if (barVal == 0)
+            {
+                healthBar.fillRect.gameObject.SetActive(false);
+            }
+        }
+        if(currentHP <= 0)
+        {
+            //End game screen
         }
     }
     void gridWalk()
