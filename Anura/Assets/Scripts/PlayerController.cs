@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     int currentHP;
     int prevHP;
     public float damage;
+    public float detectRange;
+
     [SerializeField]
     Slider healthBar;
 
@@ -82,7 +84,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            hurt(30);
+            hurtheal(30);
         }
         //DEBUG KEYBOARD CONTROLS EXCUSE SHITTINESS
         if (!moving)
@@ -125,16 +127,21 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (Input.GetKeyDown(KeyCode.Alpha4) && currentHP < maxHP)
                 {
-                    currentHP += 20;
+                    hurtheal(20);
                 }
             }
-            Collider[] nearColliders = Physics.OverlapSphere(transform.position, 1);
+            Collider[] nearColliders = Physics.OverlapSphere(transform.position, detectRange);
             if (nearColliders.Length > 0)
                 foreach (Collider collider in nearColliders)
                 {
                     if (collider.CompareTag("Grid"))
                     {
                         currentPoint = collider.gameObject;
+                    }
+                    if (collider.CompareTag("Pickup"))
+                    {
+                        Debug.Log("YE");
+                        collider.GetComponent<GeneralPickup>().pickUp(transform);
                     }
                 }
         }
@@ -215,9 +222,15 @@ public class PlayerController : MonoBehaviour
         EraseString();
     }
 
-    public void hurt(int amount)
+    public void hurtheal(int amount)
     {
-        currentHP -= amount;
+        currentHP += amount;
         Debug.Log(currentHP);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectRange);
     }
 }

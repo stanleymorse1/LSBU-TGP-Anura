@@ -25,13 +25,13 @@ public class Battle : MonoBehaviour
         else if (atk == enemyAtk)
         {
             Debug.Log("Draw");
-            player.SendMessage("hurt", enemy.damage / 2);
+            player.SendMessage("hurtheal", -enemy.damage / 2);
             enemy.SendMessage("hurt", player.damage / 2);
         }
         else
         {
             Debug.Log("Lose");
-            player.SendMessage("hurt", enemy.damage);
+            player.SendMessage("hurtheal", -enemy.damage);
         }
     }
     public void endFight()
