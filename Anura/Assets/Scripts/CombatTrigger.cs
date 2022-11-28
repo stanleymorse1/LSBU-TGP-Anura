@@ -24,7 +24,7 @@ public class CombatTrigger : MonoBehaviour
             playerCam = brain.ActiveVirtualCamera.VirtualCameraGameObject;
             player = other.gameObject;
             GameObject midPoint = new GameObject("MidPoint");
-            midPoint.transform.position = transform.position + player.transform.position / 2;
+            midPoint.transform.position = (transform.position + player.transform.position) / 2;
             combatCam.GetComponent<CinemachineVirtualCamera>().Follow = midPoint.transform;
             combatCam.GetComponent<CinemachineVirtualCamera>().LookAt = midPoint.transform;
 
