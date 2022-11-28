@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     Slider healthBar;
 
-    static string inputFile;
+    string input;
     //string prev = "";
     //string[] directions;
 
@@ -36,49 +36,15 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-#if UNITY_EDITOR
-        inputFile = "Assets/Resources/InputCodes.txt";
-#else
-        inputFile = Application.persistentDataPath + "/InputCodes.txt";
-#endif
         anim = GetComponent<Animator>();
-        EraseString();
         prevHP = maxHP;
         currentHP = maxHP;
         fightManager = GameObject.FindWithTag("GameController").GetComponent<Battle>();
     }
-    public static void WriteString(string s)
+    public void readCard(string s)
     {
-        //Checks if the input is already stored (debounce)
-        //string[] inputs = inputFile.Split("\n");
-
-        //if (!Array.Exists(inputs, p => p == s))
-        if (new FileInfo(inputFile).Length == 0)
-        {
-            StreamWriter writer = new StreamWriter(inputFile, true);
-            writer.Write(s);
-            writer.Close();
-            //Re-import the file to update the reference in the editor
-            //AssetDatabase.ImportAsset(inputFile);
-            //TextAsset asset = (TextAsset)Resources.Load("InputCodes");
-        }
-
-    }
-    public static string ReadString()
-    {
-        //Read the text from directly from the txt file
-        StreamReader reader = new StreamReader(inputFile);
-        string output = reader.ReadToEnd();
-        Debug.Log(output);
-        reader.Close();
-        return output;
-    }
-    //THIS SHOULD BE HANDLED IN PYTHON SCRIPT, REMOVE WHEN USING WITH SCANNER
-    public void EraseString()
-    {
-        File.WriteAllText(inputFile, "");
-        //AssetDatabase.ImportAsset(inputFile);
-        //TextAsset asset = (TextAsset)Resources.Load("InputCodes");
+        if(!inFight)
+            gridWalk(s);
     }
     void Update()
     {
@@ -89,25 +55,25 @@ public class PlayerController : MonoBehaviour
         //DEBUG KEYBOARD CONTROLS EXCUSE SHITTINESS
         if (!moving)
         {
+            //if(input != null)
+            //{
+            //    gridWalk(input);
+            //}
             if (Input.GetKeyDown(KeyCode.W))
             {
-                WriteString("0");
-                gridWalk();
+                gridWalk("up");
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
-                WriteString("1");
-                gridWalk();
+                gridWalk("left");
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
-                WriteString("2");
-                gridWalk();
+                gridWalk("down");
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
-                WriteString("3");
-                gridWalk();
+                gridWalk("right");
             }
 
             // Enable combat moves
@@ -140,18 +106,12 @@ public class PlayerController : MonoBehaviour
                     }
                     if (collider.CompareTag("Pickup"))
                     {
-                        Debug.Log("YE");
+                        //Debug.Log("YE");
                         collider.GetComponent<GeneralPickup>().pickUp(transform);
                     }
                 }
         }
 
-        //Detect if the input file has changed, and key is being pressed
-        //if(inputFile != prev && new FileInfo(inputFile).Length > 0)
-        //{
-        //    move();
-        //    prev = inputFile;
-        //}
         anim.SetBool("Moving", moving);
         if (nextPoint && currentPoint != nextPoint && Vector3.Distance(transform.position, nextPoint.transform.position) > 0.01f)
         {
@@ -181,35 +141,35 @@ public class PlayerController : MonoBehaviour
             //End game screen
         }
     }
-    void gridWalk()
+    void gridWalk(string action)
     {
         //Read text file, clean up text, convert to int and process command
-        int action = int.Parse(ReadString());
+        //int action = int.Parse(ReadString());
         GridPoint point = currentPoint.GetComponent<GridPoint>();
         switch (action)
         {
-            case 0:
+            case "up":
                 if (point.up)
                 {
                     anim.SetTrigger("Forward");
                     nextPoint = point.up.gameObject;
                 }
                 break;
-            case 1:
+            case "left":
                 if (point.left)
                 {
                     anim.SetTrigger("Left");
                     nextPoint = point.left.gameObject;
                 }
                 break;
-            case 2:
+            case "down":
                 if (point.down)
                 {
                     anim.SetTrigger("Back");
                     nextPoint = point.down.gameObject;
                 }
                 break;
-            case 3:
+            case "right":
                 if (point.right)
                 {
                     anim.SetTrigger("Right");
@@ -219,7 +179,6 @@ public class PlayerController : MonoBehaviour
             default:
                 break;
         }
-        EraseString();
     }
 
     public void hurtheal(int amount)

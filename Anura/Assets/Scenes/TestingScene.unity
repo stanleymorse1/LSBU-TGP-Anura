@@ -254,12 +254,12 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 48298033}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
@@ -445,12 +445,12 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 85149979}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
@@ -1105,12 +1105,12 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 378789560}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
@@ -1248,7 +1248,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 385860030}
   m_LocalRotation: {x: 0.3268056, y: 0, z: 0, w: 0.9450916}
-  m_LocalPosition: {x: 0.17, y: 20.58, z: -23.529999}
+  m_LocalPosition: {x: 0.17, y: 20.602, z: -24.296999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2124,6 +2124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 972939136}
   - component: {fileID: 972939135}
+  - component: {fileID: 972939137}
   m_Layer: 0
   m_Name: Game manager
   m_TagString: GameController
@@ -2167,6 +2168,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &972939137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972939134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cce87c1ed509c842ad0797f939c8328, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 637226331}
 --- !u!1 &1066022447
 GameObject:
   m_ObjectHideFlags: 0
@@ -3429,12 +3443,12 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1698818137}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
@@ -3719,7 +3733,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1889701470}
   m_LocalRotation: {x: 0.3268056, y: 0, z: 0, w: 0.9450916}
-  m_LocalPosition: {x: 0.17, y: 20.58, z: -23.529999}
+  m_LocalPosition: {x: 0.17, y: 20.602, z: -24.296999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5090,22 +5104,22 @@ PrefabInstance:
     - target: {fileID: 122159719293451523, guid: 6f78f7eaf88b27a43aab73c5f33d7cf9,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.23682268
+      value: 0.23304358
       objectReference: {fileID: 0}
     - target: {fileID: 122159719293451523, guid: 6f78f7eaf88b27a43aab73c5f33d7cf9,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.035278626
+      value: -0.034261838
       objectReference: {fileID: 0}
     - target: {fileID: 122159719293451523, guid: 6f78f7eaf88b27a43aab73c5f33d7cf9,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.96031547
+      value: 0.9615266
       objectReference: {fileID: 0}
     - target: {fileID: 122159719293451523, guid: 6f78f7eaf88b27a43aab73c5f33d7cf9,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.14305477
+      value: 0.14136305
       objectReference: {fileID: 0}
     - target: {fileID: 122159719293451532, guid: 6f78f7eaf88b27a43aab73c5f33d7cf9,
         type: 3}
@@ -5285,12 +5299,12 @@ PrefabInstance:
     - target: {fileID: 3551053563508108455, guid: a9b3de0b3fa4855438e3b74d32042369,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.78
+      value: 2.802
       objectReference: {fileID: 0}
     - target: {fileID: 3551053563508108455, guid: a9b3de0b3fa4855438e3b74d32042369,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.04
+      value: -2.807
       objectReference: {fileID: 0}
     - target: {fileID: 3551053563508108455, guid: a9b3de0b3fa4855438e3b74d32042369,
         type: 3}
@@ -5385,12 +5399,12 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8786604266877694136}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
