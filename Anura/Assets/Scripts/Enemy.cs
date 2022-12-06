@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour
         }
         if (currentHP <= 0)
         {
-            healthBar.fillRect.gameObject.SetActive(false);
+            //healthBar.fillRect.gameObject.SetActive(false);
             Debug.Log("Death");
             fightManager.endFight();
             gameObject.GetComponent<CombatTrigger>().exitBattle();

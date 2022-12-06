@@ -14,6 +14,8 @@ public class Battle : MonoBehaviour
     public Image pCard;
     public Image eCard;
 
+    public bool applyFx;
+
     [SerializeField]
     private Animator anim;
     public void startFight()
@@ -31,21 +33,21 @@ public class Battle : MonoBehaviour
         if((atk == enemyAtk -1) || atk == 2 && enemyAtk == 0)
         {
             anim.SetTrigger("PlayerWin");
+            StartCoroutine(applyDamage("win"));
             Debug.Log("Win");
-            enemy.SendMessage("hurt", player.damage);
-
         }
         else if (atk == enemyAtk)
         {
-            anim.SetTrigger("EnemyWin");
+            anim.SetTrigger("Draw");
+            StartCoroutine(applyDamage("draw"));
             Debug.Log("Draw");
-            player.SendMessage("hurtheal", -enemy.damage / 2);
-            enemy.SendMessage("hurt", player.damage / 2);
+            
         }
         else
         {
+            anim.SetTrigger("EnemyWin");
+            StartCoroutine(applyDamage("lose"));
             Debug.Log("Lose");
-            player.SendMessage("hurtheal", -enemy.damage);
         }
     }
     public void endFight()
@@ -53,5 +55,23 @@ public class Battle : MonoBehaviour
         player.inFight = false;
         enemy.gameObject.GetComponent<CombatTrigger>().exitBattle();
         Destroy(enemy.transform.parent.gameObject, 0.5f);
+    }
+    IEnumerator applyDamage(string state)
+    {
+        yield return new WaitUntil(() => applyFx == true);
+        switch (state)
+        {
+            case "win":
+                enemy.SendMessage("hurt", player.damage);
+                break;
+            case "draw":
+                player.SendMessage("hurtheal", -enemy.damage / 2);
+                enemy.SendMessage("hurt", player.damage / 2);
+                break;
+            case "lose":
+                player.SendMessage("hurtheal", -enemy.damage);
+                break;
+        }
+        applyFx = false;
     }
 }

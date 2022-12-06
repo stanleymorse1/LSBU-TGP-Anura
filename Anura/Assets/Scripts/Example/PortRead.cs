@@ -19,7 +19,7 @@ public class PortRead : MonoBehaviour
         colours.Add("25005F2799C4", "red");
 
 
-        stream = new SerialPort("COM5", 9600);//COM6 for laptop, COM3 for uni
+        stream = new SerialPort("COM6", 9600);//COM6 for laptop, COM3 for uni
         stream.ReadTimeout = 100;
         stream.Open();
         isStreaming = true;

@@ -19,7 +19,7 @@ public class CardInput : MonoBehaviour
         inputs.Add("25005F2799C4", "right");
 
 
-        stream = new SerialPort("COM5", 9600);//COM6 for laptop, COM3 for uni FIX THIS TO BE AUTOMATIC
+        stream = new SerialPort("COM6", 9600);//COM6 for laptop, COM3 for uni FIX THIS TO BE AUTOMATIC
         stream.ReadTimeout = 100;
         stream.Open();
         isStreaming = true;
