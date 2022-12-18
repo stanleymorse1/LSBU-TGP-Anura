@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     public Slider healthBar;
     public Battle fightManager;
 
+    bool db;
     public int damage;
     private void Start()
     {
@@ -36,8 +37,9 @@ public class Enemy : MonoBehaviour
                 healthBar.fillRect.gameObject.SetActive(false);
             }
         }
-        if (currentHP <= 0)
+        if (currentHP <= 0 && !db)
         {
+            db = true;
             //healthBar.fillRect.gameObject.SetActive(false);
             Debug.Log("Death");
             fightManager.endFight();

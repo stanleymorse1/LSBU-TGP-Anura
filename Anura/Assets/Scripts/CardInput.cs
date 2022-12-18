@@ -18,8 +18,14 @@ public class CardInput : MonoBehaviour
         inputs.Add("25005E5B2E0E", "down");
         inputs.Add("25005F2799C4", "right");
 
+        inputs.Add("25005ED8B112", "heal");
+        inputs.Add("25005EB3529A", "block");
+        inputs.Add("25005EBC8740", "attack");
+        inputs.Add("25005F196003", "magic");
 
-        stream = new SerialPort("COM6", 9600);//COM6 for laptop, COM3 for uni FIX THIS TO BE AUTOMATIC
+
+
+        stream = new SerialPort("COM5", 9600);//COM5 for Desktop, COM6 for laptop, COM3 for uni FIX THIS TO BE AUTOMATIC
         stream.ReadTimeout = 100;
         stream.Open();
         isStreaming = true;

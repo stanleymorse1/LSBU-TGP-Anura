@@ -20,7 +20,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     Slider healthBar;
 
-    string input;
+    [HideInInspector]
+    public string input;
     //string prev = "";
     //string[] directions;
 
@@ -43,15 +44,13 @@ public class PlayerController : MonoBehaviour
     }
     public void readCard(string s)
     {
-        if(!inFight)
+        if (!inFight)
             gridWalk(s);
+        if (inFight && !fightManager.debounce)
+            attack(s);
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            hurtheal(30);
-        }
         //DEBUG KEYBOARD CONTROLS EXCUSE SHITTINESS
         if (!moving)
         {
@@ -81,21 +80,22 @@ public class PlayerController : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
-                    fightManager.attack(0);
+                    attack("attack");
                 }
                 else if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
-                    fightManager.attack(1);
+                    attack("magic");
                 }
                 else if (Input.GetKeyDown(KeyCode.Alpha3))
                 {
-                    fightManager.attack(2);
+                    attack("block");
                 }
                 else if (Input.GetKeyDown(KeyCode.Alpha4) && currentHP < maxHP)
                 {
-                    hurtheal(20);
+                    attack("heal");
                 }
             }
+
             Collider[] nearColliders = Physics.OverlapSphere(transform.position, detectRange);
             if (nearColliders.Length > 0)
                 foreach (Collider collider in nearColliders)
@@ -111,7 +111,6 @@ public class PlayerController : MonoBehaviour
                     }
                 }
         }
-
         anim.SetBool("Moving", moving);
         if (nextPoint && currentPoint != nextPoint && Vector3.Distance(transform.position, nextPoint.transform.position) > 0.01f)
         {
@@ -175,6 +174,31 @@ public class PlayerController : MonoBehaviour
                     anim.SetTrigger("Right");
                     nextPoint = point.right.gameObject;
                 }
+                break;
+            default:
+                break;
+        }
+    }
+    void attack(string action)
+    {
+        fightManager.debounce = true;
+        switch (action)
+        {
+            case "attack":
+                fightManager.attack(0);
+                break;
+            case "magic":
+                fightManager.attack(1);
+                break;
+            case "block":
+                fightManager.attack(2);
+                break;
+            case "heal":
+                if (currentHP <= maxHP - 20)
+                    hurtheal(20);
+                else
+                    hurtheal(maxHP - currentHP);
+                fightManager.attack(3);
                 break;
             default:
                 break;
