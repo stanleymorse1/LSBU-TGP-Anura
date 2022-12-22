@@ -4,6 +4,7 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class Battle : MonoBehaviour
 {
@@ -31,8 +32,28 @@ public class Battle : MonoBehaviour
     private Animator cardAnim;
     public Animator spriteAnim;
     private Animator enemyAnim;
+
+    AudioSource music;
+    public GameObject regMusic;
+    public AudioClip BossMusic;
+
+    private void Start()
+    {
+        music = GetComponent<AudioSource>();
+        cardAnim.Play("FadeIn", 1);
+    }
     public void startFight()
     {
+        Debug.Log("Fightbegan");
+        if(regMusic)
+            regMusic.GetComponent<AudioSource>().Pause();
+        if (enemy.boss)
+        {
+            music.clip = BossMusic;
+            music.Play();
+        }
+        else
+            music.Play();
         enemyAnim = enemySprite.GetComponent<Animator>();
         enemyAnim.runtimeAnimatorController = enemy.gameObject.GetComponent<Animator>().runtimeAnimatorController;
         startCam = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject;
@@ -70,8 +91,7 @@ public class Battle : MonoBehaviour
 
         pCard.sprite = cards[atk];
         eCard.sprite = cards[enemyAtk];
-        if (enemyAtk == 3)
-            enemy.hurt(-10);
+
         //ok this is such a fucking mess but hear me out: 0 is attack, 1 is magic, 2 is block.
         //RPS game controls - 0 beats 1, 1 beats 2, 2 beats 0.
         //Block only deals damage when it is attacked.
@@ -101,11 +121,15 @@ public class Battle : MonoBehaviour
         {
             cardAnim.SetTrigger("Stale");
             Debug.Log("Stalemate!");
+            if (plrAtk == 3 || enemyAtk == 3)
+                Invoke("applyHeal", 1.4f);
             Invoke("coolDown", 1);
         }
     }
     public void endFight()
     {
+        regMusic.GetComponent<AudioSource>().Play();
+        music.Stop();
         player.inFight = false;
         Invoke("camSwap", 1f);
         //enemy.gameObject.GetComponent<CombatTrigger>().exitBattle();
@@ -115,15 +139,12 @@ public class Battle : MonoBehaviour
     }
     IEnumerator applyDamage(string state)
     {
-        yield return new WaitUntil(() => applyFx == true);
         if (plrAtk == 0)
             spriteAnim.SetTrigger("Melee");
         else if (plrAtk == 1)
             spriteAnim.SetTrigger("Magic");
         else if (plrAtk == 2)
             spriteAnim.SetTrigger("Block");
-        else if (plrAtk == 3)
-            spriteAnim.SetTrigger("Heal");
 
         if (enemyAtk == 0)
             enemyAnim.SetTrigger("Melee");
@@ -131,8 +152,9 @@ public class Battle : MonoBehaviour
             enemyAnim.SetTrigger("Magic");
         else if (enemyAtk == 2)
             enemyAnim.SetTrigger("Block");
-        else if (enemyAtk == 3)
-            enemyAnim.SetTrigger("Heal");
+
+        yield return new WaitUntil(() => applyFx == true);
+
 
         switch (state)
         {
@@ -140,15 +162,43 @@ public class Battle : MonoBehaviour
                 enemy.SendMessage("hurt", player.damage);
                 break;
             case "draw":
-                player.SendMessage("hurtheal", -enemy.damage / 2);
+                player.SendMessage("hurtheal", enemy.damage / 2);
                 enemy.SendMessage("hurt", player.damage / 2);
                 break;
             case "lose":
-                player.SendMessage("hurtheal", -enemy.damage);
+                player.SendMessage("hurtheal", enemy.damage);
+                if(player.currentHP <= 0)
+                {
+                    cardAnim.SetTrigger("Defeat");
+                    Invoke("restartLevel", 4);
+                }
                 break;
         }
+        if (plrAtk == 3 || enemyAtk == 3)
+            Invoke("applyHeal", 1.4f);
+
+        yield return new WaitForSeconds(1.4f);
         applyFx = false;
         debounce = false;
+    }
+
+    void applyHeal()
+    {
+        if (plrAtk == 3)
+        {
+            spriteAnim.SetTrigger("Heal");
+            player.Invoke("heal", 0.5f);
+        }
+        if (enemyAtk == 3)
+        {
+            enemyAnim.SetTrigger("Heal");
+            enemy.hurt(-enemy.healAmt);
+        }
+    }
+
+    void restartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     void coolDown()
     {

@@ -6,6 +6,6 @@ public class Item_heal : MonoBehaviour
 {
     public void heal(Transform player)
     {
-        player.GetComponent<PlayerController>().hurtheal(30);
+        player.GetComponent<PlayerController>().healAmt += 5;
     }
 }

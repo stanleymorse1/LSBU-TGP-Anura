@@ -11,6 +11,8 @@ public class Enemy : MonoBehaviour
     public Slider healthBar;
     public Battle fightManager;
     public List<float> atkWeights = new List<float>();
+    public bool boss = false;
+    public int healAmt = 10;
 
     bool db;
     public int damage;

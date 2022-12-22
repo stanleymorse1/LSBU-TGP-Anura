@@ -9,6 +9,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Extreme_Rusty_Metal
     second: {fileID: 2100000, guid: 00ccd5b375bfc6446b35a424c6d0c132, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: defaultMat
+    second: {fileID: 2100000, guid: 00ccd5b375bfc6446b35a424c6d0c132, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

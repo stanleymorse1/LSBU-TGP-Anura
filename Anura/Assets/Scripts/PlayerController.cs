@@ -12,10 +12,12 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     int maxHP;
-    int currentHP;
+    [HideInInspector]
+    public int currentHP;
     int prevHP;
     public float damage;
     public float detectRange;
+    public int healAmt;
 
     [SerializeField]
     Slider healthBar;
@@ -76,7 +78,7 @@ public class PlayerController : MonoBehaviour
             }
 
             // Enable combat moves
-            if (inFight)
+            if (inFight && fightManager.debounce == false)
             {
                 if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
@@ -114,7 +116,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("Moving", moving);
         if (nextPoint && currentPoint != nextPoint && Vector3.Distance(transform.position, nextPoint.transform.position) > 0.01f)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, nextPoint.transform.position, ref velocity, 0.1f, 4f);
+            transform.position = Vector3.SmoothDamp(transform.position, nextPoint.transform.position, ref velocity, 0.1f, 8f);
             moving = true;
         }
         else
@@ -134,10 +136,6 @@ public class PlayerController : MonoBehaviour
             {
                 healthBar.fillRect.gameObject.SetActive(false);
             }
-        }
-        if(currentHP <= 0)
-        {
-            //End game screen
         }
     }
     void gridWalk(string action)
@@ -194,20 +192,30 @@ public class PlayerController : MonoBehaviour
                 fightManager.attack(2);
                 break;
             case "heal":
-                if (currentHP <= maxHP - 20)
-                    hurtheal(20);
-                else
-                    hurtheal(maxHP - currentHP);
                 fightManager.attack(3);
                 break;
             default:
                 break;
         }
     }
-
-    public void hurtheal(int amount)
+    public void heal()
     {
-        currentHP += amount;
+        hurtheal();
+    }
+    public void hurtheal(int amt = 0)
+    {
+        //No amount specified means heal
+        if(amt == 0)
+        {
+            if (currentHP <= maxHP - 20)
+                currentHP += healAmt;
+            else
+                currentHP += (maxHP - currentHP);
+        }
+        else
+        {
+            currentHP -= amt;
+        }
         Debug.Log(currentHP);
     }
 

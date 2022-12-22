@@ -12,6 +12,7 @@ public class GridPoint : MonoBehaviour
     public Transform right;
 
     public GameObject prefab;
+    public float dist = 10;
 
     public void CreatePoint(int dir = -1)
     {
@@ -21,7 +22,7 @@ public class GridPoint : MonoBehaviour
             case 0:
                 if (!up)
                 {
-                    i = Instantiate(prefab, transform.position + new Vector3(0, 0, 5), Quaternion.identity, gameObject.transform.parent);
+                    i = Instantiate(prefab, transform.position + new Vector3(0, 0, dist), Quaternion.identity, gameObject.transform.parent);
                     resetInstance(i);
                     i.GetComponent<GridPoint>().down = gameObject.transform;
                     up = i.transform;
@@ -30,7 +31,7 @@ public class GridPoint : MonoBehaviour
             case 1:
                 if (!left)
                 {
-                    i = Instantiate(prefab, transform.position + new Vector3(-5, 0, 0), Quaternion.identity, gameObject.transform.parent);
+                    i = Instantiate(prefab, transform.position + new Vector3(-dist, 0, 0), Quaternion.identity, gameObject.transform.parent);
                     resetInstance(i);
                     i.GetComponent<GridPoint>().right = gameObject.transform;
                     left = i.transform;
@@ -39,7 +40,7 @@ public class GridPoint : MonoBehaviour
             case 2:
                 if (!down)
                 {
-                    i = Instantiate(prefab, transform.position + new Vector3(0, 0, -5), Quaternion.identity, gameObject.transform.parent);
+                    i = Instantiate(prefab, transform.position + new Vector3(0, 0, -dist), Quaternion.identity, gameObject.transform.parent);
                     resetInstance(i);
                     i.GetComponent<GridPoint>().up = gameObject.transform;
                     down = i.transform;
@@ -48,7 +49,7 @@ public class GridPoint : MonoBehaviour
             case 3:
                 if (!right)
                 {
-                    i = Instantiate(prefab, transform.position + new Vector3(5, 0, 0), Quaternion.identity, gameObject.transform.parent);
+                    i = Instantiate(prefab, transform.position + new Vector3(dist, 0, 0), Quaternion.identity, gameObject.transform.parent);
                     resetInstance(i);
                     i.GetComponent<GridPoint>().left = gameObject.transform;
                     right = i.transform;
