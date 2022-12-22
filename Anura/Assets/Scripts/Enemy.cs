@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     int currentHP;
     public Slider healthBar;
     public Battle fightManager;
+    public List<float> atkWeights = new List<float>();
 
     bool db;
     public int damage;
@@ -43,7 +44,11 @@ public class Enemy : MonoBehaviour
             //healthBar.fillRect.gameObject.SetActive(false);
             Debug.Log("Death");
             fightManager.endFight();
-            gameObject.GetComponent<CombatTrigger>().exitBattle();
+            //gameObject.GetComponent<CombatTrigger>().exitBattle();
         }
+    }
+    private void OnDestroy()
+    {
+        gameObject.GetComponent<CombatTrigger>().exitBattle();
     }
 }
