@@ -10,18 +10,20 @@ public class CamTrigger : MonoBehaviour
     Vector3 triggerSize;
     public UnityEvent enter;
     public UnityEvent exit;
+    public bool cam = true;
     bool debounce;
     int prev;
 
     private void FixedUpdate()
     {
-        Collider[] nearColliders = Physics.OverlapBox(transform.position, triggerSize);
+        Collider[] nearColliders = Physics.OverlapBox(transform.position, triggerSize/2);
         if (nearColliders.Length > 0)
             foreach (Collider collider in nearColliders)
             {
                 if (collider.CompareTag("Player") && !debounce)
                 {
-                    Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false);
+                    if(cam)
+                        Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false);
                     enter.Invoke();
                     debounce = true;
                 }

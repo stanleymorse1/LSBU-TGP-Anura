@@ -143,6 +143,7 @@ public class PlayerController : MonoBehaviour
         //Read text file, clean up text, convert to int and process command
         //int action = int.Parse(ReadString());
         GridPoint point = currentPoint.GetComponent<GridPoint>();
+        input = action;
         switch (action)
         {
             case "up":

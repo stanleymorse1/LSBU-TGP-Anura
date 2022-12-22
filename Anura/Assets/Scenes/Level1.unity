@@ -4765,7 +4765,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28540
+  m_Name: pb_Mesh107228
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11641,7 +11641,7 @@ PrefabInstance:
     - target: {fileID: 4151974903735599027, guid: 1d87612d3ccbd494885c96f0944e02a9,
         type: 3}
       propertyPath: scene
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4151974903735599027, guid: 1d87612d3ccbd494885c96f0944e02a9,
         type: 3}
@@ -13700,7 +13700,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7976324243539333617
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13719,7 +13719,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &7976324243539333618
 Transform:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13734,7 +13734,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7976324243539333619
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13756,7 +13756,7 @@ MonoBehaviour:
   m_AngularDamping: 0
 --- !u!114 &7976324243539333628
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13783,7 +13783,7 @@ MonoBehaviour:
   m_CenterOnActivate: 1
 --- !u!114 &7976324243539333629
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -15688,6 +15688,7 @@ GameObject:
   - component: {fileID: 7976324245012499332}
   - component: {fileID: 7976324245012499323}
   - component: {fileID: 7976324245012499333}
+  - component: {fileID: 7976324245012499335}
   - component: {fileID: 7976324245012499334}
   m_Layer: 0
   m_Name: Game manager
@@ -15852,6 +15853,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7976324245012499335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7976324245012499322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740b37a6adc66804c889811d62dc48f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Music:
+  - {fileID: 7976324245012499334}
+  - {fileID: 519189711}
+  Sound: []
 --- !u!1 &7976324245107920412
 GameObject:
   m_ObjectHideFlags: 0
