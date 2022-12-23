@@ -28,12 +28,13 @@ public class Enemy : MonoBehaviour
     }
     private void Update()
     {
-        if (currentHP != prevHP)
+        if(currentHP != prevHP)
         {
-            float cFrac = (float)currentHP / maxHP;
+            float cFrac = (float)currentHP/maxHP;
             float barVal = Mathf.Lerp(healthBar.value, cFrac, 0.1f);
             healthBar.value = barVal;
-            if ((currentHP < prevHP) && healthBar.value <= cFrac)
+            //Only update previous health when bar settles
+            if (healthBar.value <= cFrac + 0.01f && healthBar.value >= cFrac -0.01f)
                 prevHP = currentHP;
             if (barVal == 0)
             {

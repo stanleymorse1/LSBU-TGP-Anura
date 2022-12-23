@@ -278,15 +278,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd4c4e28bfaea8547bfed6662d91e53b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 60
+  maxHP: 40
   healthBar: {fileID: 922154775976905533}
   fightManager: {fileID: 0}
   atkWeights:
+  - 0.1
+  - 0.3
   - 1
-  - 0.2
-  - 0.7
-  - 0
-  damage: 15
+  - 0.3
+  boss: 0
+  healAmt: 10
+  damage: 10
 --- !u!114 &922154776207457370
 MonoBehaviour:
   m_ObjectHideFlags: 0

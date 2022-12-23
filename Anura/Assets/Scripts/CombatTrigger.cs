@@ -13,7 +13,6 @@ public class CombatTrigger : MonoBehaviour
     Battle fightManager;
     private void Start()
     {
-        combatCam.transform.parent = null;
         brain = Camera.main.GetComponent<CinemachineBrain>();
         fightManager = GameObject.FindWithTag("GameController").GetComponent<Battle>();
     }
@@ -56,6 +55,7 @@ public class CombatTrigger : MonoBehaviour
     }
     public void exitBattle()
     {
+        combatCam.transform.parent = null;
         Debug.Log("Exiting battle");
         combatCam.SetActive(false);
         playerCam.SetActive(true);

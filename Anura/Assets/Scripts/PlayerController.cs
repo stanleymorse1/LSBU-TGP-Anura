@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]
     public string input;
+    AudioSource footStep;
     //string prev = "";
     //string[] directions;
 
@@ -39,6 +40,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        footStep = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
         prevHP = maxHP;
         currentHP = maxHP;
@@ -60,19 +62,19 @@ public class PlayerController : MonoBehaviour
             //{
             //    gridWalk(input);
             //}
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetAxis("Vertical") > 0)
             {
                 gridWalk("up");
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("Horizontal") < 0)
             {
                 gridWalk("left");
             }
-            else if (Input.GetKeyDown(KeyCode.S))
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetAxis("Vertical") < 0)
             {
                 gridWalk("down");
             }
-            else if (Input.GetKeyDown(KeyCode.D))
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("Horizontal") > 0)
             {
                 gridWalk("right");
             }
@@ -80,19 +82,19 @@ public class PlayerController : MonoBehaviour
             // Enable combat moves
             if (inFight && fightManager.debounce == false)
             {
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetButtonDown("Fire3"))
                 {
                     attack("attack");
                 }
-                else if (Input.GetKeyDown(KeyCode.Alpha2))
+                else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetButtonDown("Jump"))
                 {
                     attack("magic");
                 }
-                else if (Input.GetKeyDown(KeyCode.Alpha3))
+                else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetButtonDown("Fire2"))
                 {
                     attack("block");
                 }
-                else if (Input.GetKeyDown(KeyCode.Alpha4) && currentHP < maxHP)
+                else if ((Input.GetKeyDown(KeyCode.Alpha4) || Input.GetButtonDown("Fire1")) && currentHP < maxHP)
                 {
                     attack("heal");
                 }
@@ -121,6 +123,16 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            if (GetComponent<VolumeControls>())
+            {
+                if (GetComponent<VolumeControls>().active == false)
+                    footStep.Stop();
+            }
+            else
+            {
+                footStep.Stop();
+            }
+
             moving = false;
         }
         // Update healthbar if health changes
@@ -140,6 +152,8 @@ public class PlayerController : MonoBehaviour
     }
     void gridWalk(string action)
     {
+        footStep.time = 0.2f;
+        footStep.Play();
         //Read text file, clean up text, convert to int and process command
         //int action = int.Parse(ReadString());
         GridPoint point = currentPoint.GetComponent<GridPoint>();

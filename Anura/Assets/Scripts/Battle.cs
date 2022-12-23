@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
@@ -33,9 +34,21 @@ public class Battle : MonoBehaviour
     public Animator spriteAnim;
     private Animator enemyAnim;
 
+    public TextMeshProUGUI plrDmg;
+    public TextMeshProUGUI enemyDmg;
+
     AudioSource music;
     public GameObject regMusic;
     public AudioClip BossMusic;
+
+
+    public AudioClip plrMagic;
+    public AudioClip enemyMagic;
+    public AudioClip heal;
+
+    public AudioClip success;
+    public AudioClip fail;
+    public AudioClip draw;
 
     private void Start()
     {
@@ -104,18 +117,25 @@ public class Battle : MonoBehaviour
             cardAnim.SetTrigger("PlayerWin");
             StartCoroutine(applyDamage("win"));
             Debug.Log("Win");
+            enemyDmg.text = player.damage.ToString();
+            AudioSource.PlayClipAtPoint(success, transform.position, PlayerPrefs.GetInt("soundVol")/10);
         }
         else if (atk == enemyAtk && atk <= 1)
         {
             cardAnim.SetTrigger("Draw");
             StartCoroutine(applyDamage("draw"));
             Debug.Log("Draw");
+            enemyDmg.text = (player.damage/2).ToString();
+            plrDmg.text = (enemy.damage/2).ToString();
+            AudioSource.PlayClipAtPoint(draw, transform.position, PlayerPrefs.GetInt("soundVol")/10);
         }
         else if ((enemyAtk!= 2 && enemyAtk == atk - 1) || enemyAtk == 2 && atk == 0 || (enemyAtk <= 1 && atk == 3))
         {
             cardAnim.SetTrigger("EnemyWin");
             StartCoroutine(applyDamage("lose"));
             Debug.Log("Lose");
+            plrDmg.text = enemy.damage.ToString();
+            AudioSource.PlayClipAtPoint(fail, transform.position, PlayerPrefs.GetInt("soundVol")/10);
         }
         else
         {
@@ -123,6 +143,10 @@ public class Battle : MonoBehaviour
             Debug.Log("Stalemate!");
             if (plrAtk == 3 || enemyAtk == 3)
                 Invoke("applyHeal", 1.4f);
+            if (plrAtk == 2)
+                spriteAnim.SetTrigger("Block");
+            if (enemyAtk == 2)
+                enemyAnim.SetTrigger("Block");
             Invoke("coolDown", 1);
         }
     }
@@ -142,14 +166,21 @@ public class Battle : MonoBehaviour
         if (plrAtk == 0)
             spriteAnim.SetTrigger("Melee");
         else if (plrAtk == 1)
+        {
             spriteAnim.SetTrigger("Magic");
+            AudioSource.PlayClipAtPoint(plrMagic, transform.position, PlayerPrefs.GetInt("soundVol")/10);
+        }
         else if (plrAtk == 2)
             spriteAnim.SetTrigger("Block");
 
         if (enemyAtk == 0)
             enemyAnim.SetTrigger("Melee");
         else if (enemyAtk == 1)
+        {
             enemyAnim.SetTrigger("Magic");
+            AudioSource.PlayClipAtPoint(enemyMagic, transform.position, PlayerPrefs.GetInt("soundVol")/10);
+        }
+            
         else if (enemyAtk == 2)
             enemyAnim.SetTrigger("Block");
 
@@ -184,6 +215,7 @@ public class Battle : MonoBehaviour
 
     void applyHeal()
     {
+        AudioSource.PlayClipAtPoint(heal, transform.position, PlayerPrefs.GetInt("soundVol")/10);
         if (plrAtk == 3)
         {
             spriteAnim.SetTrigger("Heal");
